@@ -1,28 +1,26 @@
-function handleResp() {
-    return fetch("https://v1.jinrishici.com/all.json")
-        .then(resp => {
-            if (resp.ok) {
-                return Promise.resolve(resp.json());
-            }
-            return Promise.reject();
-        });
-}
 
 function handleData(data) {
     return [data.origin, data.author, data.content];
 }
 
-async function getResultByAsync() {
-    const data = await handleResp();
-    const result = await handleData(data);
-    return result;
-}
-
 function getResultByPromise() {
-    return handleResp().then(data => handleData(data))
+    return fetch("https://v1.jinrishici.com/all.json")
+        .then(resp => resp.json())
+        .then(data => handleData(data))
         .catch(err => {
             console.log(err);
-        })
+        });
+}
+
+async function getResultByAsync() {
+    try {
+        const response = await fetch("https://v1.jinrishici.com/all.json");
+        const data = await response.json();
+        const result = handleData(data);
+        return result;
+    } catch (err) {
+        return e;
+    }
 }
 
 
